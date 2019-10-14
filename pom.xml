@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.github.martinpaljak</groupId>
-        <artifactId>javacard</artifactId>
-        <version>18.10.04</version>
+        <artifactId>metacard</artifactId>
+        <version>19.09.03</version>
     </parent>
     <artifactId>capfile</artifactId>
-    <packaging>jar</packaging>
+    <version>19.04.20</version>
     <name>CAP file library</name>
-    <version>18.10.18</version>
     <url>https://github.com/martinpaljak/capfile</url>
     <description>JavaCard CAP parsing</description>
     <licenses>
@@ -28,16 +28,17 @@
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcpkix-jdk15on</artifactId>
-            <version>${bc.version}</version>
+            <version>1.63</version>
             <optional>true</optional>
         </dependency>
     </dependencies>
     <build>
         <plugins>
+            <!-- Small CLI utility -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.2.1</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -47,7 +48,8 @@
                         <configuration>
                             <finalName>capfile</finalName>
                             <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>pro.javacard.CAPFileTool</mainClass>
                                 </transformer>
                             </transformers>
@@ -69,7 +71,7 @@
             <plugin>
                 <groupId>com.akathist.maven.plugins.launch4j</groupId>
                 <artifactId>launch4j-maven-plugin</artifactId>
-                <version>1.7.22</version>
+                <version>1.7.25</version>
                 <executions>
                     <execution>
                         <id>capfile-exe</id>
@@ -88,11 +90,15 @@
                                 <minVersion>1.8.0</minVersion>
                             </jre>
                             <versionInfo>
-                                <fileVersion>${revision.windows}</fileVersion>
+                                <fileVersion>
+                                    ${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}.${parsedVersion.buildNumber}
+                                </fileVersion>
                                 <txtFileVersion>${project.version}</txtFileVersion>
                                 <fileDescription>Parse JavaCard CAP files</fileDescription>
-                                <copyright>(C) 2018 Martin Paljak (MIT License)</copyright>
-                                <productVersion>${revision.windows}</productVersion>
+                                <copyright>(C) 2018-2019 Martin Paljak (MIT License)</copyright>
+                                <productVersion>
+                                    ${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}.${parsedVersion.buildNumber}
+                                </productVersion>
                                 <txtProductVersion>${project.version}</txtProductVersion>
                                 <productName>capfile</productName>
                                 <internalName>capfile</internalName>
@@ -101,6 +107,11 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <!-- Reproducible -->
+            <plugin>
+                <groupId>io.github.zlika</groupId>
+                <artifactId>reproducible-build-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
