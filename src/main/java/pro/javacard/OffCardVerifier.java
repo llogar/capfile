@@ -166,8 +166,8 @@ public class OffCardVerifier {
                             throw new IOException("Failed to create folder: " + f.getParentFile());
                         f = new File(out, entry.getName());
                     }
-                    try (InputStream is = jarfile.getInputStream(entry);
-                         FileOutputStream fo = new java.io.FileOutputStream(f)) {
+                    InputStream is = jarfile.getInputStream(entry);
+                    try (FileOutputStream fo = new java.io.FileOutputStream(f)) {
                         byte[] buf = new byte[1024];
                         while (true) {
                             int r = is.read(buf);
